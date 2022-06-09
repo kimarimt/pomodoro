@@ -1,3 +1,4 @@
+from time import sleep
 from tkinter import *
 from PIL import ImageTk, Image
 
@@ -6,12 +7,16 @@ class App(Tk):
     screen_width = 500
     screen_height = 500
     font = ('Helvetica bold', 48)
+    timer_label_color = '#BCE1BE'
+    break_label_color = '#D0AAA5'
     timer_font = ('Helvetica Bold', 32)
     background_color = '#F8F7E0'
     timer_background_color = '#f16749'
 
     def __init__(self):
         super().__init__()
+        self.checkmarks = []
+
         self.title('Pomodoro')
         self.geometry(f'{self.screen_width}x{self.screen_height}')
         self.resizable(False, False)
@@ -50,7 +55,7 @@ class App(Tk):
             textvariable=self.minute,
             font=self.timer_font,
             background=self.timer_background_color)
-        self.minute_label.place(x=215, y=250)
+        self.minute_label.place(x=218, y=250)
 
         # Colon Label
         colon = Label(master=canvas)
@@ -85,7 +90,48 @@ class App(Tk):
         self.reset_button.place(x=350, y=375)
 
     def start_timer(self):
-        print('Timer start')
+        cycles = 7
 
+        for i in range(cycles, 0, -1):
+            if i % 2 != 0:
+                self.label.config(text='Timer', foreground=self.timer_label_color)
+                self.countdown(1)
+            else:
+                self.label.config(text='Break', foreground=self.break_label_color)
+                self.countdown(1)
+
+        self.label.config(text='Long Break', foreground=self.break_label_color)
+        self.label.place(x=125)
+        self.countdown(1)
+                
+
+    def countdown(self, minute):
+        minute = minute
+        secs = 59
+
+        self.minute.set(f'0{minute}')
+        for i in range(minute, -1, -1):
+            self.second.set(f'{secs}')
+            for i in range(secs, -1, -1):
+                sleep(0.01)
+                if i < 10:
+                    self.second.set(f'0{i}')
+                else:
+                    self.second.set(f'{i}')
+                self.update()
+            
+            if i != 0:
+                secs = 59
+                self.second.set(f'{secs}')
+            
+            sleep(0.01)
+            if i < 10:
+                self.minute.set(f'0{i}')
+            else:
+                self.minute.set(f'{i}')
+            
+            self.update()
+
+    
     def reset_timer(self):
         print('Timer reset')
