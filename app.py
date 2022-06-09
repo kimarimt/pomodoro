@@ -131,28 +131,32 @@ class App(Tk):
         mins = minute
         secs = 59
 
+        self.minute.set(f'{mins}')
         for i in range(mins, -1, -1):
             if self.stop_timer:
                 break 
-
-            sleep(0.01)
-            if i < 10:
-                self.minute.set(f'0{i}')
-            else:
-                self.minute.set(f'{i}')
-            self.update()
+            
+            sleep(1)
+            if i != mins:
+                if i < 10:
+                    self.minute.set(f'0{i}')
+                else:
+                    self.minute.set(f'{i}')
+                self.update()
 
             for j in range(secs, -1, -1):
                 if self.stop_timer:
                     break
-
+                
                 self.second.set(f'{j}')
-                sleep(0.01)
+                sleep(1)
                 if j < 10:
                     self.second.set(f'0{j}')
                 else:
                     self.second.set(f'{j}')
                 self.update()
+
+            
             
 
     def reset_timer(self):
