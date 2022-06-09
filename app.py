@@ -92,12 +92,16 @@ class App(Tk):
 
     def add_checkmark(self, canvas: Canvas):
         checkmark = Label(master=canvas)
-        checkmark.configure(text='✓', foreground=self.green, bg=self.background_color, font=self.checkmark_font)
+        checkmark.configure(
+            text='✓',
+            foreground=self.green,
+            bg=self.background_color,
+            font=self.checkmark_font)
         self.checkmarks.append(checkmark)
 
     def display_checkmarks(self):
         x_pos = 215
-        
+
         for checkmark in self.checkmarks:
             checkmark.place(x=x_pos, y=400)
             x_pos += 20
@@ -125,14 +129,14 @@ class App(Tk):
             self.countdown(minute=15)
             self.add_checkmark(self.canvas)
             self.display_checkmarks()
-                
 
     def countdown(self, minute):
         mins = minute
         secs = 59
-        self.minute.set(f'{mins}') if mins > 10 else self.minute.set(f'0{mins}')
+        self.minute.set(
+            f'{mins}') if mins > 10 else self.minute.set(f'0{mins}')
 
-        for i in range(mins-1, -1, -1):
+        for i in range(mins - 1, -1, -1):
             for j in range(secs, -1, -1):
                 if self.stop_timer:
                     break
@@ -153,9 +157,6 @@ class App(Tk):
                 else:
                     self.minute.set(f'{i}')
 
-            
-            
-
     def reset_timer(self):
         self.stop_timer = True
         self.minute.set('00')
@@ -165,4 +166,3 @@ class App(Tk):
         self.checkmarks.clear()
         self.label.config(text='Timer', foreground=self.green)
         self.label.place(x=190)
-
