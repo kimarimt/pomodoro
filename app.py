@@ -109,15 +109,15 @@ class App(Tk):
         for i in range(cycles, 0, -1):
             if self.stop_timer:
                 break
-
-            if i % 2 != 0:
-                self.label.config(text='Timer', foreground=self.green)
-                self.countdown(minute=25)
             else:
-                self.label.config(text='Break', foreground=self.red)
-                self.countdown(minute=5)
-                self.add_checkmark(self.canvas,)
-                self.display_checkmarks()
+                if i % 2 != 0:
+                    self.label.config(text='Timer', foreground=self.green)
+                    self.countdown(minute=25)
+                else:
+                    self.label.config(text='Break', foreground=self.red)
+                    self.countdown(minute=5)
+                    self.add_checkmark(self.canvas,)
+                    self.display_checkmarks()
 
         if not self.stop_timer:
             self.label.config(text='Long Break', foreground=self.red)
@@ -130,31 +130,28 @@ class App(Tk):
     def countdown(self, minute):
         mins = minute
         secs = 59
+        self.minute.set(f'{mins}') if mins > 10 else self.minute.set(f'0{mins}')
 
-        self.minute.set(f'{mins}')
-        for i in range(mins, -1, -1):
+        for i in range(mins-1, -1, -1):
+            for j in range(secs, -1, -1):
+                if self.stop_timer:
+                    break
+                else:
+                    self.second.set(f'{j}')
+                    sleep(1)
+                    if j < 10:
+                        self.second.set(f'0{j}')
+                    else:
+                        self.second.set(f'{j}')
+                    self.update()
+
             if self.stop_timer:
-                break 
-            
-            sleep(1)
-            if i != mins:
+                break
+            else:
                 if i < 10:
                     self.minute.set(f'0{i}')
                 else:
                     self.minute.set(f'{i}')
-                self.update()
-
-            for j in range(secs, -1, -1):
-                if self.stop_timer:
-                    break
-                
-                self.second.set(f'{j}')
-                sleep(1)
-                if j < 10:
-                    self.second.set(f'0{j}')
-                else:
-                    self.second.set(f'{j}')
-                self.update()
 
             
             
